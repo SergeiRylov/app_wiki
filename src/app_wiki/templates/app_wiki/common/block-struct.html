@@ -1,0 +1,32 @@
+{% load i18n %}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h4 class="card-title">
+            <a href="{% url 'app_wiki:search-modal' %}" class="modal-link">{% trans 'Search' %}</a>
+        </h4>
+        <div class="card-tools">
+            {% if request.user.is_authenticated and not no_show_add_button %}
+            <a href="{% url 'app_wiki:create' %}?parent={{struct.id}}" class="btn btn-success modal-link">
+                <i class="bi bi-plus"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card-body">
+        {% for st in struct.get_navigation %}
+        <p style="margin-bottom: 0px;margin-left: {{st.level}}rem;">
+            {% if struct.id == st.id %}
+            <b>
+                {{st.get_article.title}}
+                <!-- <i class="bi bi-circle-fill" style="font-size: 0.5rem; padding-left: 4px;"></i> -->
+            </b>
+            {% else %}
+            <a href="{% url 'app_wiki:view' st.id %}">
+                {{st.get_article.title}}
+            </a>
+            {% endif %}
+        </p>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,43 @@
+{% load i18n base_tag %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">
+            {{ results.paginator.count }}
+        </h4>
+        <div class="card-tools">
+            <form action="{% url 'app_wiki:search' %}">
+                <div class="input-group">
+                    {% include 'base/forms/input-str.html' with field=form.search %}
+                    <span class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            {% for res in results %}
+            <li class="list-group-item py-3">
+                <h4 class="fs-5 mb-1">
+                    <a href="{% url 'app_wiki:view' res.id %}"
+                        class="link-body-emphasis link-underline-opacity-0 link-underline-opacity-100-hover">
+                        {{res.get_article.title|search_replace:form.search.value}}
+                    </a>
+                </h4>
+                <p class="mb-1">
+                    {{res.body_snippet|default:''|linebreaksbr|search_replace:form.search.value}}
+                </p>
+                <p class="fs-7 text-secondary mb-0">
+                    <span class="badge text-bg-light me-1">{{res.get_article.date}}</span>
+                    {{res.get_article.get_full_name|default:res.get_article.user|default:''}}
+                </p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="card-footer">
+        {% include 'base/include/pagination.html' with pages=results %}
+    </div>
+</div>

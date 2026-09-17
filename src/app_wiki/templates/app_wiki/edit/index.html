@@ -1,0 +1,123 @@
+{% extends 'app_base/page.html' %}
+{% load base_tag %}
+
+{% block css %}
+<link href="https://cdn.jsdelivr.net/npm/markdown-text-editor/dist/style.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<div class="row">
+    <div class="col-9">
+        {% include "app_wiki/edit/block.html" %}
+    </div>
+    <div class="col-3">
+        {% include "app_wiki/common/block-struct.html" %}
+        {#% include "app_wiki/edit/attach.html" %#}
+    </div>
+</div>
+
+<!-- Модальное окно для предпросмотра -->
+<div id="previewModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
+    <div style="position:relative; width:80%; max-width:800px; margin:50px auto; background:white; padding:20px; border-radius:8px; max-height:80vh; overflow-y:auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid #dee2e6; padding-bottom:10px;">
+            <h2 style="margin:0;">Предпросмотр</h2>
+            <button onclick="document.getElementById('previewModal').style.display='none'" style="background:none; border:none; font-size:28px; cursor:pointer; color:#6c757d;">&times;</button>
+        </div>
+        <div id="previewContent" style="padding:10px;"></div>
+        <div style="margin-top:20px; border-top:1px solid #dee2e6; padding-top:15px; text-align:right;">
+            <button onclick="document.getElementById('previewModal').style.display='none'" class="btn btn-secondary">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('previewBtn').addEventListener('click', function(e) {
+    e.preventDefault(); // Отменяем переход по ссылке
+    
+    // Берем URL из атрибута href кнопки
+    const previewUrl = this.getAttribute('href');
+    
+    // Получаем содержимое поля body
+    const bodyContent = document.getElementById('id_body').value;
+    
+    // Получаем CSRF-токен
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    
+    // Отправляем POST-запрос на URL из href
+    fetch(previewUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+            body: bodyContent
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Отображаем предпросмотр в модальном окне
+        document.getElementById('previewContent').innerHTML = data.html || data.content || data;
+        document.getElementById('previewModal').style.display = 'block';
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        alert('Не удалось загрузить предпросмотр. Пожалуйста, попробуйте снова.');
+    });
+});
+
+// Закрытие модального окна при клике вне его
+document.getElementById('previewModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.style.display = 'none';
+    }
+});
+
+// Закрытие по клавише ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        document.getElementById('previewModal').style.display = 'none';
+    }
+});
+</script>
+
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/markdown-text-editor"></script>
+<script>
+    const editor = new MarkdownEditor('#id_body', {
+        mode: 'hybrid',
+        placeholder: 'Start writing...',
+        footer: {
+            line: true,
+            col: true,
+            chars: true,
+            words: true,
+        },
+        onChange(value) {
+            console.log('Content updated:', value.length, 'characters');
+        },
+        toolbar: [
+            'heading', 'bold', 'italic', 'strikethrough', 'blockquote',
+            'ul', 'ol', 'checklist',
+            'code', 'codeblock', 'hr', 'table', 'link', 'undo', 'redo', 
+            // {
+            //     image: {
+            //         fileInput: {
+            //             accept: ['webp', 'avif', 'png'],
+            //             uploadUrl: '/api/upload'
+            //         }
+            //     }
+            // },
+            // 'indent', 'outdent', 'preview',
+        ],
+    });
+</script>
+{% endblock %}

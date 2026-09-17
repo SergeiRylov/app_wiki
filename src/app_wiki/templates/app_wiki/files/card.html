@@ -1,0 +1,32 @@
+{% load file_attr %}
+
+<figure class="card h-100 mb-0">
+    <div class="card-header h-100 text-center">
+        {% if url == 'view' %}
+        <a href="{{file.file.url}}">
+            <div class="display-1 text-primary">
+                {{file.file|file_icon}}
+            </div>
+            {{file.file|file_name}}
+        </a>
+        {% elif url == 'edit' %}
+        <a href="{% url 'app_wiki:files-edit' struct.id file.id %}" class="modal-link">
+            <div class="display-1 text-primary">
+                {{file.file|file_icon}}
+            </div>
+            {{file.file|file_name}}
+        </a>
+        {% else %}
+        <div class="display-1 text-primary">
+            {{file.file|file_icon}}
+        </div>
+        {{file.file|file_name}}
+        {% endif %}
+    </div>
+    <div class="card-body py-2">
+        <p class="fw-semibold mb-0 text-truncate">{{file.description|default:''}}</p>
+        <p class="fs-7 text-secondary mb-0">
+            {{file.file|file_size}}B
+        </p>
+    </div>
+</figure>

@@ -1,0 +1,31 @@
+{% load i18n %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">
+        </h4>
+        <div class="card-tools">
+            {% include 'app_wiki/menu.html' with active='view' %}
+        </div>
+    </div>
+    <div class="card-body">
+        {{article.body|safe|default:''}}
+        {% if article.image_set.count > 0 or article.file_set.count > 0 %}
+        <div class="row row-cols-4 g-3 mt-3" id="gallery-grid">
+            {% for image in article.image_set.all %}
+            <div class="col">
+                {% include 'app_wiki/images/card.html' with url='view' %}
+            </div>
+            {% endfor %}
+            {% for file in article.file_set.all %}
+            <div class="col">
+                {% include 'app_wiki/files/card.html' with url='view' %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        {{article.date}} {{article.user}}
+    </div>
+</div>

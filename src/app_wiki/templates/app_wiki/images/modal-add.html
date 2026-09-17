@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<div class="modal-dialog modal-xl">
+    <form method="post" action="{% url 'app_wiki:images-add' struct.id %}">
+        {% csrf_token %}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{% trans 'Add image(s)' %}</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" name="files" id="inputGroupFile02" multiple="">
+                    <!-- <label class="input-group-text" for="inputGroupFile02">Upload</label> -->
+                </div>
+                {% include 'base/forms/input.html' with field=form.description %}
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" onclick="formSubmit(this);">{% trans 'Save' %}</button>
+                <button class="btn btn-link" type="button" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </form>
+</div>

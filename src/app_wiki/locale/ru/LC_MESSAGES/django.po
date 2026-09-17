@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-02 12:51+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: app_wiki/models.py:29
+msgid "Title"
+msgstr "Заголовок"
+
+#: app_wiki/models.py:30
+msgid "Content"
+msgstr "Содержание"
+
+#: app_wiki/models.py:31 app_wiki/templates/app_wiki/history/block.html:16
+msgid "Changes"
+msgstr "Изменения"
+
+#: app_wiki/models.py:67 app_wiki/models.py:79
+msgid "Description"
+msgstr "Описание"
+
+#: app_wiki/templates/app_wiki/edit/attach.html:6
+msgid "Attachments"
+msgstr "Вложения"
+
+#: app_wiki/templates/app_wiki/edit/attach.html:17
+msgid "Image"
+msgstr "Изображение"
+
+#: app_wiki/templates/app_wiki/edit/attach.html:22
+msgid "File"
+msgstr "Файл"
+
+#: app_wiki/templates/app_wiki/edit/block.html:20
+msgid "Preview"
+msgstr "Просмотр"
+
+#: app_wiki/templates/app_wiki/edit/block.html:23
+#: app_wiki/templates/app_wiki/edit/modal-preview.html:13
+#: app_wiki/templates/app_wiki/files/modal-add.html:19
+#: app_wiki/templates/app_wiki/files/modal-edit.html:26
+#: app_wiki/templates/app_wiki/images/modal-add.html:19
+#: app_wiki/templates/app_wiki/images/modal-edit.html:18
+#: app_wiki/templates/app_wiki/struct/modal-create.html:16
+msgid "Save"
+msgstr "Сохранить"
+
+#: app_wiki/templates/app_wiki/edit/modal-preview.html:6
+#: app_wiki/templates/app_wiki/files/block.html:23
+#: app_wiki/templates/app_wiki/files/modal-add.html:8
+msgid "Add file(s)"
+msgstr "Добавить файл(ы)."
+
+#: app_wiki/templates/app_wiki/files/modal-edit.html:8
+#: app_wiki/templates/app_wiki/images/modal-edit.html:8
+msgid "Edit image"
+msgstr "Изменить изобрражение"
+
+#: app_wiki/templates/app_wiki/files/modal-edit.html:23
+#: app_wiki/templates/app_wiki/images/modal-edit.html:16
+msgid "Delete"
+msgstr "Удалить"
+
+#: app_wiki/templates/app_wiki/history/block.html:14
+msgid "Date"
+msgstr "Дата"
+
+#: app_wiki/templates/app_wiki/history/block.html:15
+msgid "User"
+msgstr "Пользователь"
+
+#: app_wiki/templates/app_wiki/images/block.html:21
+#: app_wiki/templates/app_wiki/images/modal-add.html:8
+msgid "Add image(s)"
+msgstr "Добавить изобр."
+
+#: app_wiki/templates/app_wiki/menu.html:9
+msgid "View"
+msgstr "Просмотр"
+
+#: app_wiki/templates/app_wiki/menu.html:14
+msgid "Edit"
+msgstr "Редакт."
+
+#: app_wiki/templates/app_wiki/menu.html:19
+msgid "Images"
+msgstr "Изображения"
+
+#: app_wiki/templates/app_wiki/menu.html:24
+msgid "Files"
+msgstr "Файлы"
+
+#: app_wiki/templates/app_wiki/menu.html:29
+msgid "History"
+msgstr "История"
+
+#: app_wiki/templates/app_wiki/common/block-struct.html:6
+msgid "Section Article"
+msgstr "Статьи раздела"
+
+#: app_wiki/templates/app_wiki/struct/modal-create.html:8
+msgid "Create Article"
+msgstr "Создать статью"
+
+#: app_wiki/templates/app_wiki/view/modal-preview.html:6
+msgid "Preview Article"
+msgstr "Предпрсмотр статьи"
+
+#: app_wiki/views/files.py:40
+msgid "File(s) added"
+msgstr "Добавлены файлв"
+
+#: app_wiki/views/files.py:66
+msgid "Deleted File"
+msgstr "Удален файл"
+
+#: app_wiki/views/files.py:76
+msgid "Changed file description"
+msgstr "Измененно описание файла"
+
+#: app_wiki/views/images.py:40
+msgid "Image(s) added"
+msgstr "Добавлены изображения"
+
+#: app_wiki/views/images.py:66
+msgid "Deleted Image"
+msgstr "Удалено изображение"
+
+#: app_wiki/views/images.py:76
+msgid "Changed image description"
+msgstr "Измененно описание изображения"

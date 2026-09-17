@@ -1,0 +1,13 @@
+{% extends 'app_base/page.html' %}
+{% load base_tag %}
+
+{% block page %}
+<div class="row">
+    <div class="col-9">
+        {% include "app_wiki/files/block.html" %}
+    </div>
+    <div class="col-3">
+        {% include "app_wiki/common/block-struct.html" %}
+    </div>
+</div>
+{% endblock %}

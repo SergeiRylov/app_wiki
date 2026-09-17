@@ -1,0 +1,32 @@
+{% load i18n %}
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+            </h4>
+            <div class="card-tools">
+                {% include 'app_wiki/menu.html' with active='edit' %}
+            </div>
+        </div>
+        <div class="card-body">
+            {% include 'base/forms/input.html' with field=form.title %}
+            {% include 'base/forms/textarea.html' with field=form.body %}
+            {% include 'base/forms/input.html' with field=form.changes %}
+        </div>
+        <div class="card-footer">
+            {% trans "Are you sure?" as text %}
+            <button type="submit" name="submit" value="delete" class="btn btn-danger float-start"
+                onclick="return confirm('{{ text|escapejs }}');">
+                {% trans 'Delete' %}
+            </button>
+            <!-- <a href="{% url 'app_wiki:preview' struct.id %}" class="btn btn-link float-end" id="previewBtn">
+                {% trans 'Preview' %}
+            </a> -->
+            <button type="submit" class="btn btn-success float-end">
+                {% trans 'Save' %}
+            </button>
+        </div>
+    </div>
+</form>

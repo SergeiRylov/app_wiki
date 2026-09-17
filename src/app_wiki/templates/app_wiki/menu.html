@@ -1,0 +1,33 @@
+{% load i18n %}
+
+<p class="float-start">&nbsp</p>
+{% if request.user.is_authenticated %}
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link{% if active == 'view' %} active{% endif %}" aria-current="page" href="{% url 'app_wiki:view' struct.id %}">
+            {% trans 'View' %}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link{% if active == 'edit' %} active{% endif %}" aria-current="page" href="{% url 'app_wiki:edit' struct.id %}">
+            {% trans 'Edit' %}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link{% if active == 'images' %} active{% endif %}" aria-current="page" href="{% url 'app_wiki:images-index' struct.id %}">
+            {% trans 'Images' %}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link{% if active == 'files' %} active{% endif %}" aria-current="page" href="{% url 'app_wiki:files-index' struct.id %}">
+            {% trans 'Files' %}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link{% if active == 'history' %} active{% endif %}" aria-current="page" href="{% url 'app_wiki:history' struct.id %}">
+            {% trans 'History' %}
+        </a>
+    </li>
+</ul>
+{% endif %}

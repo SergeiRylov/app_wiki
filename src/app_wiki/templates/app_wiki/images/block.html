@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title"></h4>
+        <div class="card-tools">
+            {% include 'app_wiki/menu.html' with active='images' %}
+        </div>
+    </div>
+    <div class="card-body">
+        <a href="{% url 'app_wiki:images-add' struct.id %}" class="float-end modal-link btn-link text-success">
+            {% trans 'Add image(s)' %}
+        </a>
+        {% if article.image_set.count > 0 %}
+        <div class="row row-cols-4 g-3 mt-3" id="gallery-grid">
+            {% for image in article.image_set.all %}
+            <div class="col">
+                {% include 'app_wiki/images/card.html' with url='edit' %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>

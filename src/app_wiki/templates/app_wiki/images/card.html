@@ -1,0 +1,20 @@
+<figure class="card h-100 mb-0">
+    {% if url == 'view' %}
+    <a href="{{image.file.url}}">
+        <img src="{{image.file.url}}" alt="{{image.description|default:''}}" class="card-img-top" loading="lazy">
+    </a>
+    {% elif url == 'edit' %}
+    <a href="{% url 'app_wiki:images-edit' struct.id image.id %}" class="modal-link">
+        <img src="{{image.file.url}}" alt="{{image.description|default:''}}" class="card-img-top" loading="lazy">
+    </a>
+    {% else %}
+    <img src="{{image.file.url}}" alt="{{image.description|default:''}}" class="card-img-top" loading="lazy">
+    {% endif %}
+    <figcaption class="card-body py-2">
+        <p class="fw-semibold mb-0 text-truncate">{{image.description|default:''}}</p>
+        <p class="fs-7 text-secondary mb-0">
+            {{image.file.size}}B
+            <span class="float-end">{{image.file.width}}×{{image.file.height}}</span>
+        </p>
+    </figcaption>
+</figure>

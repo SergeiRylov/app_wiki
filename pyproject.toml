@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "app_wiki"
+version = "0.0.1"
+description = "Reusable Django wiki app"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "rs" }]
+dependencies = [
+    "Django>=6.1",
+    "django-mptt==0.18.0",
+    "django-mptt-admin==2.10.0",
+    "cmarkgfm==2025.10.22",
+    "pillow==12.3.0"
+]
+
+[project.optional-dependencies]
+dev = ["ruff", "pytest", "pytest-django"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+app_wiki = [
+    "templates/**/**/*",
+    "static/**/*",
+    "locale/**/*",
+    "py.typed",
+]

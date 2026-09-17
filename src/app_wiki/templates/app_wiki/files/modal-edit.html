@@ -1,0 +1,32 @@
+{% load i18n file_attr %}
+
+<div class="modal-dialog">
+    <form method="post" action="{% url 'app_wiki:files-edit' struct.id file.id %}">
+        {% csrf_token %}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{% trans 'Edit image' %}</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Увеличенная иконка -->
+                <center>
+                    <div class="display-1 text-primary">
+                        {{ file.file|file_icon }}
+                    </div>
+                    {{file.file|file_name}}
+                </center>
+                {% include 'base/forms/input.html' with field=form.description %}
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button class="btn btn-danger" type="submit" name="submit" value="delete">
+                    {% trans 'Delete' %}
+                </button>
+                <div>
+                    <button class="btn btn-primary" type="button" onclick="formSubmit(this);">{%trans 'Save'%}</button>
+                    <button class="btn btn-link" type="button" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,20 @@
+{% load i18n %}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form method="POST" action="{% url 'app_wiki:search-modal' %}">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h4 class="modal-title">{% trans 'Search' %}</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% include 'base/forms/input.html' with field=form.search %}
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" onclick="formSubmit(this);">{% trans 'Search' %}</button>
+                <button class="btn btn-link" type="button" data-bs-dismiss="modal">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
