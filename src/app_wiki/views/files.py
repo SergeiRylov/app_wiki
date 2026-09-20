@@ -13,13 +13,10 @@ def index(request, id_struct):
     struct = get_object_or_404(Struct, id=id_struct)
     article = Article.objects.filter(struct=struct).last()
 
-    children = functions.get_children(struct)
-
     content = {
         "title": article.title,
         "breadcrumbs": functions.get_breadcrumbs(struct),
         "struct": struct,
-        "children": children,
         "article": article,
     }
     return render(request, "app_wiki/files/index.html", content)
@@ -40,10 +37,12 @@ def add(request, id_struct):
                 article.changes = _("File(s) added")
                 article.save()
                 for fl in files:
-                    file = File.objects.create(article=article, file=fl)
+                    file = File.objects.create(
+                        user=request.user, article=article, file=fl
+                    )
                     if form.cleaned_data["description"]:
                         file.description = form.cleaned_data["description"]
-                        file.save()
+                    file.save()
 
         return redirect(request.META["HTTP_REFERER"])
     else:
@@ -70,7 +69,9 @@ def edit(request, id_struct, id_file):
                     fl.delete()
                     break
         else:
-            form = forms.AttachForm(request.POST, initial={"description": file.description})
+            form = forms.AttachForm(
+                request.POST, initial={"description": file.description}
+            )
             if form.is_valid() and form.changed_data:
                 new_article = article.copy(user=request.user)
                 new_article.changes = _("Changed file description")

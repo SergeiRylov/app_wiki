@@ -50,8 +50,6 @@ def details(request, id_struct):
     struct = get_object_or_404(Struct, id=id_struct)
     article = Article.objects.filter(struct=struct).last()
 
-    children = functions.get_children(struct)
-
     # text = markdown.markdown(article.body)
     # text = re.sub(r"~~(.+?)~~", r"<del>\1</del>", text)
     article.body = cmarkgfm.github_flavored_markdown_to_html(article.body)
@@ -60,7 +58,6 @@ def details(request, id_struct):
         "title": article.title,
         "breadcrumbs": functions.get_breadcrumbs(struct),
         "struct": struct,
-        "children": children,
         "article": article,
     }
     return render(request, "app_wiki/details/index.html", content)
@@ -91,7 +88,9 @@ def edit(request, id_struct):
                 changes = "Content was changed"
             else:
                 changes = ""
-            article = Article.objects.create(struct=struct, user=request.user, **form.cleaned_data)
+            article = Article.objects.create(
+                struct=struct, user=request.user, **form.cleaned_data
+            )
             article.changes = changes
             article.save()
             return redirect(request.META["HTTP_REFERER"])
@@ -150,20 +149,31 @@ def search(request):
 
     results = []
     if search:
-        latest_article = Article.objects.filter(struct=OuterRef("id")).order_by("-date", "-id")
+        latest_article = Article.objects.filter(struct=OuterRef("id")).order_by(
+            "-date", "-id"
+        )
 
         results = Struct.objects.annotate(
             latest_article_id=Subquery(latest_article.values("id")[:1]),
             latest_article_title=Subquery(
-                Article.objects.filter(id=OuterRef("latest_article_id")).values("title")[:1]
+                Article.objects.filter(id=OuterRef("latest_article_id")).values(
+                    "title"
+                )[:1]
             ),
             latest_article_body=Subquery(
-                Article.objects.filter(id=OuterRef("latest_article_id")).values("body")[:1]
+                Article.objects.filter(id=OuterRef("latest_article_id")).values("body")[
+                    :1
+                ]
             ),
             latest_article_date=Subquery(
-                Article.objects.filter(id=OuterRef("latest_article_id")).values("date")[:1]
+                Article.objects.filter(id=OuterRef("latest_article_id")).values("date")[
+                    :1
+                ]
             ),
-        ).filter(Q(latest_article_body__icontains=search) | Q(latest_article_title__icontains=search))
+        ).filter(
+            Q(latest_article_body__icontains=search)
+            | Q(latest_article_title__icontains=search)
+        )
 
         # Пагинация ДО постобработки — QuerySet остаётся ленивым,
         # count() и LIMIT/OFFSET выполняются на уровне БД.
@@ -206,7 +216,9 @@ def search_modal(request):
     if request.POST:
         form = forms.SearchForm(request.POST)
         if form.is_valid():
-            url = "{}?search={}".format(reverse("app_wiki:search"), form.cleaned_data["search"])
+            url = "{}?search={}".format(
+                reverse("app_wiki:search"), form.cleaned_data["search"]
+            )
             return redirect(url)
     else:
         form = forms.SearchForm()

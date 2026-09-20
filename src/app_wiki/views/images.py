@@ -13,13 +13,10 @@ def index(request, id_struct):
     struct = get_object_or_404(Struct, id=id_struct)
     article = Article.objects.filter(struct=struct).last()
 
-    children = functions.get_children(struct)
-
     content = {
         "title": article.title,
         "breadcrumbs": functions.get_breadcrumbs(struct),
         "struct": struct,
-        "children": children,
         "article": article,
     }
     return render(request, "app_wiki/images/index.html", content)
@@ -40,10 +37,12 @@ def image_add(request, id_struct):
                 article.changes = _("Image(s) added")
                 article.save()
                 for fl in files:
-                    image = Image.objects.create(article=article, file=fl)
+                    image = Image.objects.create(
+                        user=request.user, article=article, file=fl
+                    )
                     if form.cleaned_data["description"]:
                         image.description = form.cleaned_data["description"]
-                        image.save()
+                    image.save()
 
         return redirect(request.META["HTTP_REFERER"])
     else:
@@ -70,7 +69,9 @@ def image_edit(request, id_struct, id_image):
                     img.delete()
                     break
         else:
-            form = forms.AttachForm(request.POST, initial={"description": image.description})
+            form = forms.AttachForm(
+                request.POST, initial={"description": image.description}
+            )
             if form.is_valid() and form.changed_data:
                 new_article = article.copy(user=request.user)
                 new_article.changes = _("Changed image description")
