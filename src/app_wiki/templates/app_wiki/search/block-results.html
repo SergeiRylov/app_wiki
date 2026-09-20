@@ -8,7 +8,7 @@
         <div class="card-tools">
             <form action="{% url 'app_wiki:search' %}">
                 <div class="input-group">
-                    {% include 'base/forms/input-str.html' with field=form.search %}
+                    {% include 'app_base/forms/input-str.html' with field=form.search %}
                     <span class="input-group-append">
                         <button type="submit" class="btn btn-primary">Send</button>
                     </span>

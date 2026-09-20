@@ -13,7 +13,7 @@
                     <input type="file" class="form-control" name="files" id="inputGroupFile02" multiple="">
                     <!-- <label class="input-group-text" for="inputGroupFile02">Upload</label> -->
                 </div>
-                {% include 'base/forms/input.html' with field=form.description %}
+                {% include 'app_base/forms/input.html' with field=form.description %}
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" type="button" onclick="formSubmit(this);">{% trans 'Save' %}</button>

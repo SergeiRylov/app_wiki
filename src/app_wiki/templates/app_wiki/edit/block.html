@@ -11,9 +11,9 @@
             </div>
         </div>
         <div class="card-body">
-            {% include 'base/forms/input.html' with field=form.title %}
-            {% include 'base/forms/textarea.html' with field=form.body %}
-            {% include 'base/forms/input.html' with field=form.changes %}
+            {% include 'app_base/forms/input.html' with field=form.title %}
+            {% include 'app_base/forms/textarea.html' with field=form.body %}
+            {% include 'app_base/forms/input.html' with field=form.changes %}
         </div>
         <div class="card-footer">
             {% trans "Are you sure?" as text %}

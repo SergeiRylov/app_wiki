@@ -9,7 +9,7 @@
                 <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {% include 'base/forms/input.html' with field=form.search %}
+                {% include 'app_base/forms/input.html' with field=form.search %}
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" type="button" onclick="formSubmit(this);">{% trans 'Search' %}</button>
