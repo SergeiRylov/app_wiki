@@ -28,7 +28,7 @@ def get_breadcrumbs(struct):
     for parent in struct.get_ancestors(include_self=False):
         breadcrumbs.append(
             [
-                reverse("app_wiki:view", args=[parent["id"]]),
+                reverse("app_wiki:view", args=[parent.id]),
                 parent.get_article().title,
             ]
         )

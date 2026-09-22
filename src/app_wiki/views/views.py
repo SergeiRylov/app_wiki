@@ -42,7 +42,7 @@ def create(request):
 
     content = {"form": form}
 
-    return render(request, "app_wiki/struct/modal-create.html", content)
+    return render(request, "app_wiki/common/modal-create.html", content)
 
 
 def details(request, id_struct):
@@ -50,9 +50,10 @@ def details(request, id_struct):
     struct = get_object_or_404(Struct, id=id_struct)
     article = Article.objects.filter(struct=struct).last()
 
-    # text = markdown.markdown(article.body)
-    # text = re.sub(r"~~(.+?)~~", r"<del>\1</del>", text)
-    article.body = cmarkgfm.github_flavored_markdown_to_html(article.body)
+    if article.body:
+        article.body = cmarkgfm.github_flavored_markdown_to_html(article.body)
+    else:
+        article.body = ""
 
     content = {
         "title": article.title,

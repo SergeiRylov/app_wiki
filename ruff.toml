@@ -1,0 +1,7 @@
+line-length = 110
+exclude = [
+    "*/migrations/*",
+    "*apps.py"
+]
+[lint]
+ignore = ["RUF012", "DTZ","BLE001"]

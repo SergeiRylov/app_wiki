@@ -11,7 +11,9 @@ class ArticleCreateForm(forms.ModelForm):
         widgets = {
             "title": forms.TextInput(attrs={"required": True}),
         }
-        labels = {"struct": _("Parent article")}
+        labels = {
+            "struct": _("Parent article"),
+        }
 
     parent = forms.ChoiceField(label=_("Parent article"), required=True)
 

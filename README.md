@@ -15,23 +15,17 @@
 
 ### Из GitHub (рекомендуется)
 
-В `requirements.txt` вашего проекта:
+В `requirements.txt` вашего проекта добавьте:
 
 ```txt
-app_wiki @ git+https://github.com/SergeiRylov/app_wiki.git@0.1.0
+app_wiki @ git+https://github.com/SergeiRylov/app_base.git
+app_wiki @ git+https://github.com/SergeiRylov/app_wiki.git
 ```
 
 Затем:
 
 ```bash
 pip install -r requirements.txt
-```
-
-### Из локальной копии (для разработки)
-
-```bash
-git clone https://github.com/SergeiRylov/app_wiki.git
-pip install -e ./app_wiki
 ```
 
 ## Быстрый старт
@@ -50,6 +44,7 @@ INSTALLED_APPS = [
     # Зависимости app_wiki
     "mptt",
     "django_mptt_admin",
+    "app_base.apps.app_baseConfig",
     # Само приложение
     "app_wiki.apps.app_wikiConfig",
 ]
@@ -82,37 +77,7 @@ python manage.py check
 
 Откройте `/app_wiki/` в браузере.
 
-## Модели
 
-### `Struct`
-
-Описывает дерево и отношения родитель-ребенок
-
-### `Article`
-
-Содержит данные статьи 
-
-### `Image`
-
-Изображения, прикрепленные к статье
-
-### `Files`
-
-Файлы, прикрепленные к статье
-
-## 🎨 Шаблоны и статика
-
-Шаблоны и статика лежат в namespace `app_wiki/`:
-
-```
-app_wiki/templates/app_wiki/...
-```
-
-Переопределить шаблон в проекте можно, положив свой файл с тем же путём в `templates/app_wiki/` проекта — он имеет приоритет над пакетным.
-
-```django
-{% extends "app_wiki/base.html" %}
-```
 
 ## Локализация
 
@@ -122,21 +87,6 @@ app_wiki/templates/app_wiki/...
 python manage.py compilemessages
 ```
 
-## Changelog
-
-### 0.1.1
-
-- Первый публичный релиз.
-- Модели `Article`, `Image`.
-- Namespace `app_wiki` для URL, шаблонов и статики.
-- Интеграция с admin и mptt.
-
-### 0.1.0
-
-- Первый публичный релиз.
-- Модели `Struct`, `Article`, `Images`, `Files`
-- Namespace `app_wiki` для URL, шаблонов и статики.
-- Интеграция с admin и mptt.
 
 ## Лицензия
 
