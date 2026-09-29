@@ -3,3 +3,4 @@ __pycache__
 app_wiki.egg-info
 django.mo
 files
+staticfiles
