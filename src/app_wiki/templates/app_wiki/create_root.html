@@ -1,9 +1,30 @@
 {% extends 'app_base/page.html' %}
-{% load app_base_tags %}
+{% load app_base_tags i18n %}
 
 {% block page %}
 <h2 class="text-center">Добро пожаловать в app_wiki</h2>
+{% if request.user.is_authenticated %}
 <p class="text-center">
-    Создайте первую статью через панель администратора
+    Создайте первую статью прямо сейчас
 </p>
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="card">
+                <div class="card-body">
+                    {% include 'app_base/forms/input.html' with field=form.title %}
+                    {% include 'app_base/forms/textarea.html' with field=form.body %}
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success float-end">
+                        {% trans 'Save' %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

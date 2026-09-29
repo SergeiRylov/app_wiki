@@ -56,7 +56,7 @@ class Article(models.Model):
         related_name="app_wiki_article_set",
     )
     title = models.CharField(max_length=1024, verbose_name=_("Title"))
-    body = models.TextField(verbose_name=_("Content"), null=True, blank=True)
+    body = models.TextField(null=True, blank=True, verbose_name=_("Content"))
     changes = models.CharField(max_length=1024, null=True, blank=True, verbose_name=_("Changes"))
 
     class Meta:

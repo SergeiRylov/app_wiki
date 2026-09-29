@@ -4,6 +4,16 @@ from django.utils.translation import gettext_lazy as _
 from app_wiki.models import Article, Struct
 
 
+class ArticleCreateRootForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ("title", "body")
+        widgets = {
+            "title": forms.TextInput(attrs={"required": True}),
+            "body": forms.Textarea(attrs={"required": False}),
+        }
+
+
 class ArticleCreateForm(forms.ModelForm):
     class Meta:
         model = Article

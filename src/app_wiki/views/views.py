@@ -17,7 +17,20 @@ def root(request):
     """Начальная страница"""
 
     if not Struct.objects.exists():
-        return render(request, "app_wiki/create_root.html")
+        content = None
+        if request.user.is_authenticated:
+            article = Article(user=request.user)
+            if request.POST:
+                form = forms.ArticleCreateRootForm(request.POST, instance=article)
+                if form.is_valid():
+                    struct = Struct.objects.create(parent=None)
+                    article.struct = struct
+                    form.save()
+                    return redirect(request.META["HTTP_REFERER"])
+            else:
+                form = forms.ArticleCreateRootForm(instance=article)
+                content = {"form": form}
+        return render(request, "app_wiki/create_root.html", content)
     else:
         id_struct = Struct.objects.filter(parent=None).first().id
         return details(request, id_struct)
@@ -89,9 +102,7 @@ def edit(request, id_struct):
                 changes = "Content was changed"
             else:
                 changes = ""
-            article = Article.objects.create(
-                struct=struct, user=request.user, **form.cleaned_data
-            )
+            article = Article.objects.create(struct=struct, user=request.user, **form.cleaned_data)
             article.changes = changes
             article.save()
             return redirect(request.META["HTTP_REFERER"])
@@ -150,31 +161,20 @@ def search(request):
 
     results = []
     if search:
-        latest_article = Article.objects.filter(struct=OuterRef("id")).order_by(
-            "-date", "-id"
-        )
+        latest_article = Article.objects.filter(struct=OuterRef("id")).order_by("-date", "-id")
 
         results = Struct.objects.annotate(
             latest_article_id=Subquery(latest_article.values("id")[:1]),
             latest_article_title=Subquery(
-                Article.objects.filter(id=OuterRef("latest_article_id")).values(
-                    "title"
-                )[:1]
+                Article.objects.filter(id=OuterRef("latest_article_id")).values("title")[:1]
             ),
             latest_article_body=Subquery(
-                Article.objects.filter(id=OuterRef("latest_article_id")).values("body")[
-                    :1
-                ]
+                Article.objects.filter(id=OuterRef("latest_article_id")).values("body")[:1]
             ),
             latest_article_date=Subquery(
-                Article.objects.filter(id=OuterRef("latest_article_id")).values("date")[
-                    :1
-                ]
+                Article.objects.filter(id=OuterRef("latest_article_id")).values("date")[:1]
             ),
-        ).filter(
-            Q(latest_article_body__icontains=search)
-            | Q(latest_article_title__icontains=search)
-        )
+        ).filter(Q(latest_article_body__icontains=search) | Q(latest_article_title__icontains=search))
 
         # Пагинация ДО постобработки — QuerySet остаётся ленивым,
         # count() и LIMIT/OFFSET выполняются на уровне БД.
@@ -217,9 +217,7 @@ def search_modal(request):
     if request.POST:
         form = forms.SearchForm(request.POST)
         if form.is_valid():
-            url = "{}?search={}".format(
-                reverse("app_wiki:search"), form.cleaned_data["search"]
-            )
+            url = "{}?search={}".format(reverse("app_wiki:search"), form.cleaned_data["search"])
             return redirect(url)
     else:
         form = forms.SearchForm()
