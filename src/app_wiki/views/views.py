@@ -1,4 +1,5 @@
 import cmarkgfm
+from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import OuterRef, Q, Subquery
 from django.http import JsonResponse
@@ -86,9 +87,15 @@ def edit(request, id_struct):
 
     if request.POST:
         if request.POST.get("submit") == "delete":
-            id_parent = struct.parent.id
-            struct.delete()
-            return redirect(reverse("app_wiki:view", id_parent))
+            if struct.get_children().filter(is_active=True).exists():
+                messages.error(request, _("Can not delete this article, it has children article"))
+            else:
+                article_new = article.copy(user=request.user)
+                article_new.data = {"oper": "delete"}
+                article.save()
+                struct.is_active = False
+                struct.save()
+                return redirect("app_wiki:view", struct.parent.id)
 
         form = forms.ArticleForm(request.POST, instance=article)
         if form.is_valid() and form.changed_data:
@@ -163,18 +170,22 @@ def search(request):
     if search:
         latest_article = Article.objects.filter(struct=OuterRef("id")).order_by("-date", "-id")
 
-        results = Struct.objects.annotate(
-            latest_article_id=Subquery(latest_article.values("id")[:1]),
-            latest_article_title=Subquery(
-                Article.objects.filter(id=OuterRef("latest_article_id")).values("title")[:1]
-            ),
-            latest_article_body=Subquery(
-                Article.objects.filter(id=OuterRef("latest_article_id")).values("body")[:1]
-            ),
-            latest_article_date=Subquery(
-                Article.objects.filter(id=OuterRef("latest_article_id")).values("date")[:1]
-            ),
-        ).filter(Q(latest_article_body__icontains=search) | Q(latest_article_title__icontains=search))
+        results = (
+            Struct.objects.filter(is_active=True)
+            .annotate(
+                latest_article_id=Subquery(latest_article.values("id")[:1]),
+                latest_article_title=Subquery(
+                    Article.objects.filter(id=OuterRef("latest_article_id")).values("title")[:1]
+                ),
+                latest_article_body=Subquery(
+                    Article.objects.filter(id=OuterRef("latest_article_id")).values("body")[:1]
+                ),
+                latest_article_date=Subquery(
+                    Article.objects.filter(id=OuterRef("latest_article_id")).values("date")[:1]
+                ),
+            )
+            .filter(Q(latest_article_body__icontains=search) | Q(latest_article_title__icontains=search))
+        )
 
         # Пагинация ДО постобработки — QuerySet остаётся ленивым,
         # count() и LIMIT/OFFSET выполняются на уровне БД.

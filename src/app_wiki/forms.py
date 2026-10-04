@@ -31,7 +31,7 @@ class ArticleCreateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["parent"].choices = [
             (struct.pk, "{} {}".format("- " * struct.level, struct.get_article().title))
-            for struct in Struct.objects.all()
+            for struct in Struct.objects.filter(is_active=True)
         ]
 
 

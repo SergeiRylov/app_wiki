@@ -15,8 +15,9 @@ class Struct(MPTTModel):
         db_index=True,
         verbose_name="Parents articles",
     )
-    # slug = models.SlugField()
+
     sortorder = models.IntegerField(default=1000)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         default_permissions = ()
@@ -33,7 +34,7 @@ class Struct(MPTTModel):
         Возвращает queryset для отрисовки текущего расположения статьи.
         """
         result = (
-            Struct.objects.filter(tree_id=self.tree_id)
+            Struct.objects.filter(tree_id=self.tree_id).filter(is_active=True)
             .filter(
                 Q(id=self.id)
                 | Q(id__in=self.get_ancestors().values("id"))
@@ -57,7 +58,9 @@ class Article(models.Model):
     )
     title = models.CharField(max_length=1024, verbose_name=_("Title"))
     body = models.TextField(null=True, blank=True, verbose_name=_("Content"))
+    
     changes = models.CharField(max_length=1024, null=True, blank=True, verbose_name=_("Changes"))
+    data = models.JSONField(default=None, null=True, blank=True)
 
     class Meta:
         default_permissions = ()
